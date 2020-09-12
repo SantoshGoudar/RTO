@@ -1,0 +1,13 @@
+server:
+  address: 0.0.0.0
+  port: 8080
+  compression:
+    enabled: true
+spring:
+  application:
+    name: rto-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
