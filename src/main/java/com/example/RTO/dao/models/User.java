@@ -3,6 +3,7 @@ package com.example.RTO.dao.models;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Set;
@@ -20,8 +21,9 @@ public class User {
     String email;
     @Id
     String phoneNumber;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @EqualsAndHashCode.Exclude
+    @JoinColumn(name = "owner_phone_number")
     Set<Vehicle> vehicles;
 
 }

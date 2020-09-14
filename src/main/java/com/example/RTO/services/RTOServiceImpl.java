@@ -37,11 +37,7 @@ public class RTOServiceImpl implements RTOService {
 
         User user = userRepository.findByPhoneNumber(registerVehicleRequest.getPhoneNumber());
         if (user != null) {
-            user.getVehicles()
-                .addAll(vehicleMapper.requestToVehicle(registerVehicleRequest.getVehicles()).stream().map(vehicle -> {
-                    vehicle.setOwner(user);
-                    return vehicle;
-                }).collect(Collectors.toList()));
+            user.getVehicles().addAll(vehicleMapper.requestToVehicle(registerVehicleRequest.getVehicles()));
             return userMapper.userToResponse(userRepository.save(user));
         } else {
 
@@ -53,8 +49,7 @@ public class RTOServiceImpl implements RTOService {
     @Transactional
     public RegisteredResponse transferVehicle(TransferVehicleRequest transferVehicleRequest) {
         User number = userRepository.findByPhoneNumber(transferVehicleRequest.getSourceUserPhoneNumber());
-        Set<Vehicle> vehicles = number
-            .getVehicles();
+        Set<Vehicle> vehicles = number.getVehicles();
         if (userRepository.existsUserByPhoneNumber(transferVehicleRequest.getTargetUserPhoneNumber())) {
             User byPhoneNumber = userRepository.findByPhoneNumber(transferVehicleRequest.getTargetUserPhoneNumber());
             Vehicle e = vehicles.stream().filter(vehicle -> vehicle.getRegistrationNumber()
@@ -62,7 +57,7 @@ public class RTOServiceImpl implements RTOService {
                 .orElse(null);
             byPhoneNumber.getVehicles().add(e);
             number.getVehicles().remove(e);
-            e.setOwner(byPhoneNumber);
+            //e.setOwner(byPhoneNumber);
             userRepository.save(number);
             userRepository.save(byPhoneNumber);
         }

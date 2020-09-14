@@ -17,10 +17,10 @@ public abstract class UserMapper {
 
     public abstract User requestToUser(RegisterVehicleRequest registerVehicleRequest);
 
-    @AfterMapping
+   /* @AfterMapping
     public void afterMapping(@MappingTarget User user, RegisterVehicleRequest registerVehicleRequest) {
         user.getVehicles().stream().forEach(vehicle -> vehicle.setOwner(user));
-    }
+    }*/
 
     public abstract RegisteredResponse userToResponse(User user);
 
