@@ -6,24 +6,30 @@ import com.example.RTO.dao.requests.RegisterVehicleRequest;
 import com.example.RTO.dao.requests.TransferVehicleRequest;
 import com.example.RTO.dao.requests.VehicleRequest;
 import com.example.RTO.dao.responses.RegisteredResponse;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring")
-public interface UserMapper {
+public abstract class UserMapper {
 
-    User requestToUser(RegisterVehicleRequest registerVehicleRequest);
+    public abstract User requestToUser(RegisterVehicleRequest registerVehicleRequest);
 
-    RegisteredResponse userToResponse(User user);
+    @AfterMapping
+    public void afterMapping(@MappingTarget User user, RegisterVehicleRequest registerVehicleRequest) {
+        user.getVehicles().stream().forEach(vehicle -> vehicle.setOwner(user));
+    }
 
-    @Mappings( {@Mapping(target = "name", source = "targetUserName"), @Mapping(target = "email", source =
-        "targetUserEmail"), @Mapping(target = "phoneNumber", source = "targetUserPhoneNumber")})
-    RegisteredResponse transferToResponse(TransferVehicleRequest transferVehicleRequest);
+    public abstract RegisteredResponse userToResponse(User user);
 
-    RegisteredResponse requestToResponse(RegisterVehicleRequest registerVehicleRequest);
+    @Mappings( {@Mapping(target = "name", source = "targetUserName"), @Mapping(target = "email", source = "targetUserEmail"), @Mapping(target = "phoneNumber", source = "targetUserPhoneNumber")})
+    public abstract RegisteredResponse transferToResponse(TransferVehicleRequest transferVehicleRequest);
 
-    Vehicle vehRequestToVehicle(VehicleRequest request);
+    public abstract RegisteredResponse requestToResponse(RegisterVehicleRequest registerVehicleRequest);
 
-    VehicleRequest vehToVehicleRequest(Vehicle request);
+    public abstract Vehicle vehRequestToVehicle(VehicleRequest request);
+
+    public abstract VehicleRequest vehToVehicleRequest(Vehicle request);
 }

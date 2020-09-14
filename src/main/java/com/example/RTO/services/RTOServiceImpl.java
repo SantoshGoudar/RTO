@@ -44,6 +44,7 @@ public class RTOServiceImpl implements RTOService {
                 }).collect(Collectors.toList()));
             return userMapper.userToResponse(userRepository.save(user));
         } else {
+
             return userMapper.userToResponse(userRepository.save(userMapper.requestToUser(registerVehicleRequest)));
         }
     }
